@@ -16,8 +16,8 @@ window.addEventListener('beforeinstallprompt', function (event) {
 
 var promise = new Promise(function (revolve, reject) {
     setTimeout(function () {
-        //revolve('This is executed once the timer is done!');
-        reject({code: 500, message: 'An error occurred!'});
+        revolve('This is executed once the timer is done!');
+        //reject({code: 500, message: 'An error occurred!'});
         //console.log('This is executed once the timer is done!');
     }, 3000);
 
@@ -41,3 +41,14 @@ promise.then(function (text) {
 
 console.log('This is executed right after setTimeout()');
 
+fetch('https://httpbin.org/ip')
+    .then(function (response) {
+        console.log(response);
+        return response.json();
+    })
+    .then(function (data) {
+        console.log(data);
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
