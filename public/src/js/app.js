@@ -23,12 +23,20 @@ var promise = new Promise(function (revolve, reject) {
 
 });
 
+//promise.then(function (text) {
+//    return text;
+//}, function (err) {
+//    console.log(err.code, err.message);
+//}).then(function (newText) {
+//    console.log(newText);
+//});
+
 promise.then(function (text) {
     return text;
-}, function (err) {
-    console.log(err.code, err.message);
 }).then(function (newText) {
     console.log(newText);
+}).catch(function (err) {
+    console.log(err.code, err.message);
 });
 
 console.log('This is executed right after setTimeout()');
