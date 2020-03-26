@@ -1,3 +1,9 @@
+var deferredPrompt;
+
+if (!window.Promise) {
+    window.Promise = Promise;
+}
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
         .register('/sw.js')
@@ -74,7 +80,7 @@ fetch('https://httpbin.org/post', {
         console.log(err);
     });
 
-// Use Ajax.
+// Use Ajax. Can't use this for service worker
 var xhr = new XMLHttpRequest();
 xhr.open('GET', 'https://httpbin.org/ip');
 xhr.responseType = 'json';
