@@ -53,12 +53,14 @@ fetch('https://httpbin.org/ip')
         console.log(err);
     });
 
+// Default is to use cors, use no-cors to not use it.
 fetch('https://httpbin.org/post', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     },
+    mode: 'cors',
     body: JSON.stringify({ message: 'Does this work?' })
 })
     .then(function (response) {
