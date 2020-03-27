@@ -73,10 +73,17 @@ self.addEventListener('activate', function (event) {
 //});
 
 // Cache only
+//self.addEventListener('fetch', function (event) {
+//    event.respondWith(
+//        caches.match(event.request)
+//    );        
+//});
+
+// Network only with Service Worker
 self.addEventListener('fetch', function (event) {
     event.respondWith(
-        caches.match(event.request)
-    );        
+        fetch(event.request)
+    );
 });
 
  
