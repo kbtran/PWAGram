@@ -1,4 +1,4 @@
-var CACHE_STATIC_NAME = 'static-v4';
+var CACHE_STATIC_NAME = 'static-v5';
 var CACHE_DYNAMIC_NAME = 'dynamic-v2';
 
 self.addEventListener('install', function (event) {
@@ -72,6 +72,24 @@ self.addEventListener('activate', function (event) {
 //    );
 //});
 
+
+// Network with cache fallback
+self.addEventListener('fetch', function (event) {
+    event.respondWith(
+        fetch(event.request)
+            .then(function (res) {
+                return caches.open(CACHE_DYNAMIC_NAME)
+                    .then(function (cache) {
+                        cache.put(event.request.url, res.clone());
+                        return res;
+                    });
+            })
+            .catch(function (err) {
+                return caches.match(event.request);
+            })
+    );
+});
+
 // Cache only
 //self.addEventListener('fetch', function (event) {
 //    event.respondWith(
@@ -79,11 +97,11 @@ self.addEventListener('activate', function (event) {
 //    );        
 //});
 
-// Network only with Service Worker
-self.addEventListener('fetch', function (event) {
-    event.respondWith(
-        fetch(event.request)
-    );
-});
+// Network only with Service worker
+//self.addEventListener('fetch', function (event) {
+//    event.respondWith(
+//        fetch(event.request)
+//    );
+//});
 
  
