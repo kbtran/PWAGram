@@ -83,7 +83,7 @@ function isInArray(string, array) {
 
 // Cache then network with offline support
 self.addEventListener('fetch', function (event) {
-    var url = 'https://httpbin.org/get';
+    var url = 'https://pwagram-6478c.firebaseio.com/posts.json';
 
     if (event.request.url.indexOf(url) > -1) {
         event.respondWith(
