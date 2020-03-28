@@ -1,4 +1,4 @@
-var CACHE_STATIC_NAME = 'static-v9';
+var CACHE_STATIC_NAME = 'static-v10';
 var CACHE_DYNAMIC_NAME = 'dynamic-v3';
 var STATIC_FILES = [
     '/',
@@ -46,6 +46,15 @@ self.addEventListener('activate', function (event) {
     return self.clients.claim();
 });
 
+function isInArray(string, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === string) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Cache then network with offline support
 self.addEventListener('fetch', function (event) {
     var url = 'https://httpbin.org/get';
@@ -60,6 +69,10 @@ self.addEventListener('fetch', function (event) {
                             return res;
                         });
                 })
+        );
+    } else if (isInArray(event.request.url, STATIC_FILES)) {
+        event.respondWith(
+            caches.match(event.request)
         );
     } else {
         event.respondWith(
@@ -90,6 +103,7 @@ self.addEventListener('fetch', function (event) {
     }
 });
 
+// Cache then network with dynamic caching strategy 
 //self.addEventListener('fetch', function (event) {
 //     console.log('[Service Worker] Fetching something ....', event);
 //    event.respondWith(
