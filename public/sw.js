@@ -1,4 +1,4 @@
-var CACHE_STATIC_NAME = 'static-v10';
+var CACHE_STATIC_NAME = 'static-v11';
 var CACHE_DYNAMIC_NAME = 'dynamic-v3';
 var STATIC_FILES = [
     '/',
@@ -46,13 +46,26 @@ self.addEventListener('activate', function (event) {
     return self.clients.claim();
 });
 
+//function isInArray(string, array) {
+//    for (var i = 0; i < array.length; i++) {
+//        if (array[i] === string) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+// Above will work fine for full URLs stored in STATIC_FILES  (e.g. the CDN links) but it'll fail for / , /index.html  etc.
+// Am improvement
 function isInArray(string, array) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i] === string) {
-            return true;
-        }
+    var cachePath;
+    if (string.indexOf(self.origin) === 0) { // request targets domain where we serve the page from (i.e. NOT a CDN)
+        console.log('matched ', string);
+        cachePath = string.substring(self.origin.length); // take the part of the URL AFTER the domain (e.g. after localhost:8080)
+    } else {
+        cachePath = string; // store the full request (for CDNs)
     }
-    return false;
+    return array.indexOf(cachePath) > -1;
 }
 
 // Cache then network with offline support
