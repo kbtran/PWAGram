@@ -1,4 +1,4 @@
-var CACHE_STATIC_NAME = 'static-v7';
+var CACHE_STATIC_NAME = 'static-v8';
 var CACHE_DYNAMIC_NAME = 'dynamic-v3';
 
 self.addEventListener('install', function (event) {
@@ -77,7 +77,9 @@ self.addEventListener('fetch', function (event) {
                                     .catch(function (err) {
                                         return caches.open(CACHE_STATIC_NAME)
                                             .then(function (cache) {
-                                                return cache.match('/offline.html');
+                                                if (event.request.url.indexOf('/help')) {
+                                                    return cache.match('/offline.html');
+                                                }       
                                             });
                                     });
                             });
