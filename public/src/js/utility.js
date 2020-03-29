@@ -1,8 +1,11 @@
 // Create Index DB posts-store if it doesn't exist.
 var dbPromise = idb.open('posts-store', 1, function (db) {
-  if (!db.objectStoreNames.contains('posts')) {
+    if (!db.objectStoreNames.contains('posts')) {
     db.createObjectStore('posts', {keyPath: 'id'});
-  }
+    }
+    if (!db.objectStoreNames.contains('sync-posts')) {
+        db.createObjectStore('sync-posts', { keyPath: 'id' });
+    }
 });
 
 // Write to IndexDB
