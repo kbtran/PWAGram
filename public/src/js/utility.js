@@ -25,3 +25,14 @@ function readAllData(st) {
             return store.getAll();
         });
 }
+
+// Clear Database
+function clearAllData(st) {
+    return dbPromise
+        .then(function (db) {
+            var tx = db.transaction(st, 'readwrite');
+            var store = tx.objectStore(st);
+            store.clear();
+            return tx.complete;
+        });
+}
