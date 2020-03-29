@@ -128,7 +128,7 @@ function sendData() {
             id: new Date().toISOString(),
             title: titleInput.value,
             location: locationInput.value,
-            image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-99adf.appspot.com/o/sf-boat.jpg?alt=media&token=19f4770c-fc8c-4882-92f1-62000ff06f16'
+            image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-6478c.appspot.com/o/sf-boat.jpg?alt=media&token=b6acac54-894b-413b-80dd-45d37d796392'
         })
     })
         .then(function (res) {
@@ -145,6 +145,7 @@ form.addEventListener('submit', function (event) {
         alert('Please enter valid data!');
         return;
     }
+
     closeCreatePostModal();
 
     if ('serviceWorker' in navigator && 'SyncManager' in window) {
@@ -159,7 +160,7 @@ form.addEventListener('submit', function (event) {
                 // write to IndexDB
                 writeData('sync-posts', post)
                     .then(function () {
-                        return sw.sync.register('sync-new-post');
+                        return sw.sync.register('sync-new-posts');
                     })
                     .then(function () {
                         var snackbarContainer = document.querySelector('#confirmation-toast');
