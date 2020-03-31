@@ -1,4 +1,5 @@
 var deferredPrompt;
+var enableNotificationsButtons = document.querySelectorAll('.enable-notifications');
 
 if (!window.Promise) {
     window.Promise = Promise;
@@ -9,6 +10,9 @@ if ('serviceWorker' in navigator) {
         .register('/sw.js')
         .then(function () {
             console.log('Service worker registered!');
+        })
+        .catch(function (err) {
+            console.log(err);
         });
 }
 
@@ -18,3 +22,21 @@ window.addEventListener('beforeinstallprompt', function (event) {
     deferredPrompt = event;
     return false;
 });
+
+function askForNotificationPermission() {
+    Notification.requestPermission(function (result) {
+        console.log('User Choice', result);
+        if (result !== 'granted') {
+            console.log('No notification permission granted!');
+        } else {
+            // Hide Button
+        }
+    });
+}
+if ('Notification' in window) {
+    // Enable all buttons
+    for (var i = 0; i < enableNotificationsButtons.length; i++) {
+        enableNotificationsButtons[i].style.display = 'inline-block';
+        enableNotificationsButtons[i].addEventListener('click', askForNotificationPermission);
+    }
+}
