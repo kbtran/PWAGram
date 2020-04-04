@@ -16,6 +16,7 @@ function initializeMedia() {
         navigator.mediaDevices = {};
     }
 
+    // For older browser
     if (!('getUserMedia' in navigator.mediaDevices)) {
         navigator.mediaDevices.getUserMedia = function (constraints) {
             var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -27,9 +28,29 @@ function initializeMedia() {
             return new Promise(function (resolve, reject) {
                 getUserMedia.call(navigator, constraints, resolve, reject);
             });
-        }
+        };
     }
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+            videoPlayer.srcObject = stream;
+            videoPlayer.style.display = 'block';
+        })
+        .catch(function (err) {
+            imagePickerArea.style.display = 'block';
+        });
 }
+
+captureButton.addEventListener('click', function (event) {
+    canvasElement.style.display = 'block';
+    videoPlayer.style.display = 'none';
+    captureButton.style.display = 'none';
+    var context = canvasElement.getContext('2d');
+    context.drawImage(videoPlayer, 0, 0, canvas.width, videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width));
+    videoPlayer.srcObject.getVideoTracks().forEach(function (track) {
+        track.stop();
+    });
+});
 
 function openCreatePostModal() {
     // createPostArea.style.display = 'block';
@@ -57,6 +78,9 @@ function openCreatePostModal() {
 function closeCreatePostModal() {
     //createPostArea.style.display = 'none';
     createPostArea.style.transform = 'translateY(100vh)';
+    imagePickerArea.style.display = 'none';
+    videoPlayer.style.display = 'none';
+    canvasElement.style.display = 'none';
 }
 
 shareImageButton.addEventListener('click', openCreatePostModal);
