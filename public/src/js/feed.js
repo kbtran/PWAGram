@@ -10,6 +10,7 @@ var canvasElement = document.querySelector('#canvas');
 var captureButton = document.querySelector('#capture-btn');
 var imagePicker = document.querySelector('#image-picker');
 var imagePickerArea = document.querySelector('#pick-image');
+var picture; 
 
 function initializeMedia() {
     if (!('mediaDevices' in navigator)) {
@@ -50,6 +51,8 @@ captureButton.addEventListener('click', function (event) {
     videoPlayer.srcObject.getVideoTracks().forEach(function (track) {
         track.stop();
     });
+    // Covert capture to a picture.
+    picture = dataURItoBlob(canvasElement.toDataURL());
 });
 
 function openCreatePostModal() {
@@ -168,23 +171,21 @@ if ('indexedDB' in window) {
 }
 
 function sendData() {
+    var id = new Date().toISOString();
+    var postData = new FormData();
+    postData.append('id', id);
+    postData.append('title', titleInput.value);
+    postData.append('location', locationInput.value);
+    postData.append('file', picture, id + '.png');
+
     fetch('https://us-central1-pwagram-6478c.cloudfunctions.net/storePostData', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            id: new Date().toISOString(),
-            title: titleInput.value,
-            location: locationInput.value,
-            image: 'https://firebasestorage.googleapis.com/v0/b/pwagram-6478c.appspot.com/o/sf-boat.jpg?alt=media&token=b6acac54-894b-413b-80dd-45d37d796392'
-        })
+        body: postData
     })
         .then(function (res) {
             console.log('Sent data', res);
             updateUI();
-        });
+        })
 }
 
 form.addEventListener('submit', function (event) {
@@ -204,7 +205,8 @@ form.addEventListener('submit', function (event) {
                 var post = {
                     id: new Date().toISOString(),
                     title: titleInput.value,
-                    location: locationInput.value
+                    location: locationInput.value,
+                    picture: picture
                 };
 
                 // write to IndexDB
