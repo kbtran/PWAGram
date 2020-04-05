@@ -20,9 +20,9 @@
     margin: auto;
 }
 
-#create-post #pick-image {
-    display: none;
-}
+    #create-post #pick-image, #create-post #location-loader {
+        display: none;
+    }
 
 #create-post #capture-btn {
     margin: 10px auto;

@@ -15,7 +15,6 @@ const mailToEmail = 'mailto:youremail@mail.com';
 const vapidPublicKey = 'PutPublicKeyHere';
 const vapidPrivateKey = 'PutPrivateKeyHere';
 
-
 var serviceAccount = require("./pwagram-fb-key.json");
 
 var gcconfig = {
@@ -75,6 +74,10 @@ exports.storePostData = functions.https.onRequest((request, response) => {
                                 id: fields.id,
                                 title: fields.title,
                                 location: fields.location,
+                                rawLocation: {
+                                    lat: fields.rawLocationLat,
+                                    lng: fields.rawLocationLng
+                                },
                                 image: "https://firebasestorage.googleapis.com/v0/b/" + bucket.name + "/o/" + encodeURIComponent(uploadedFile.name) + "?alt=media&token=" + uuid
                         }).then(() => {
                             webpush.setVapidDetails(mailToEmail, vapidPublicKey, vapidPrivateKey);
