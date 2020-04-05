@@ -19,6 +19,7 @@ locationBtn.addEventListener('click', function (event) {
     if (!('geolocation' in navigator)) {
         return;
     }
+    var sawAlert = false;
 
     locationBtn.style.display = 'none';
     locationLoader.style.display = 'block';
@@ -33,7 +34,10 @@ locationBtn.addEventListener('click', function (event) {
         console.log(err);
         locationBtn.style.display = 'inline';
         locationLoader.style.display = 'none';
-        alert('Couldn\'t fetch location, please enter manually!');
+        if (!sawAlert) {
+            alert('Couldn\'t fetch location, please enter manually!');
+            sawAlert = true;
+        }
         fetchedLocation = { lat: 0, lng: 0 };
     }, { timeout: 7000 });
 });
