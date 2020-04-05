@@ -1,7 +1,7 @@
 importScripts('/src/js/idb.js');
 importScripts('/src/js/utility.js');
 
-var CACHE_STATIC_NAME = 'static-v29';
+var CACHE_STATIC_NAME = 'static-v30';
 var CACHE_DYNAMIC_NAME = 'dynamic-v3';
 var STATIC_FILES = [
     '/',
@@ -13,6 +13,7 @@ var STATIC_FILES = [
     '/src/js/promise.js',
     '/src/js/fetch.js',
     '/src/js/material.min.js',
+    '/src/js/utility.js',
     '/src/css/app.css',
     '/src/css/feed.css',
     '/src/images/main-image.jpg',
